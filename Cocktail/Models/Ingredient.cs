@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Cocktail.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Cocktail.Models
 {
-    //public enum Flavor
-    //{
-    //    LimeJuice, TripleSec, Tequila, DarkRum, OrangeCuracao, AlmondSyrup, FreshCream,
-    //    Kahlua, Vodka, Cachaca, OrangeJuice, TomatoJuice, Bourbon, Water, ItalianSweetVermouth,
-    //    FrenchDryVermouth, Gin, WhiteRum, PinkGrapefruit, CranberryJuice, Coingtreau, Soda, CherryBrandy,
-    //    LemonJuice, SloeGin, PineappleJuice, CoconutCream, GrapefruitJuice, Cola, PeachPuree, Prosecco
-    //}
-    public class Ingredient
+    /// <summary>
+    /// Simple Ingredient object that implements the IIngredient interface
+    /// </summary>
+    public class Ingredient : IIngredient
     {
-        public int Id { get; set; }
+        [Key]
+        public int Id { get; set;  }
+        [ForeignKey("Drink")] // Foreign key to Drink.Id
+        public int DrinkId { get; set;  }
         public string Name { get; set; }
         public double Amount { get; set; }
     }

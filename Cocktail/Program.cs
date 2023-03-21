@@ -1,5 +1,7 @@
 ﻿using Cocktail;
+using Cocktail.Interfaces;
 using Cocktail.Models;
+using Cocktail.Services;
 using Microsoft.EntityFrameworkCore;
 
 class Program
@@ -7,61 +9,27 @@ class Program
     static void Main(string[] args)
     {
 
-        using (var dbContext = new CocktailCtx())
+        IService<Drink> service = new DrinkService();
+        Drink drink = new Drink
         {
-            var cocktail = new Drink
-            {
-                Name = "Mojito",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { Name = "Mint leaves" },
-                    new Ingredient { Name = "Sugar" },
-                    new Ingredient { Name = "Lime juice" },
-                    new Ingredient { Name = "White rum" },
-                    new Ingredient { Name = "Soda water" }
-                }
-            };
-
-            dbContext.Cocktails.Add(MakeCocktails());
-            dbContext.SaveChanges();
+            Name = "Mai Tai2",
+            Ingredients = new List<Ingredient>
+        { new Ingredient { Name = "Dark Rum1", Amount = 50.0 },
+          new Ingredient { Name = "Orange Curacao", Amount = 15.0 },
+          new Ingredient { Name = "Lime Juice", Amount = 10.0 },
+          new Ingredient { Name = "Lime Section, Maraschino Cherry, Lime segment"}}
+        };
+        service.AddItem(drink);
+        var f = service.GetAll();
+        foreach (var item in f)
+        {
+            Console.WriteLine(item.Name);
         }
-
+        service.Update(1, drink);
+        Drink fs = service.GetById(3);
+        Console.WriteLine(fs.Name);
+        service.Delete(1);
         Console.WriteLine("Cocktail added to database!");
         Console.ReadLine();
-    }
-
-    static ICollection<Drink> MakeCocktails()
-    {
-        ICollection<Drink> cocktails = new List<Drink>();
-        cocktails.Add(new Drink
-        {
-            Id = 1,
-            Name = "Margarita",
-            Ingredients = new List<Ingredient>
-        { new Ingredient { Id = 1, Name = "Lime Juice", Amount = 60.0 },
-          new Ingredient { Id = 2, Name = "Triple Sec", Amount = 30.0 },
-          new Ingredient { Id = 3, Name = "Tequila", Amount = 60.0 },
-          new Ingredient { Id = 4, Name = "Salt rim, Crushed ice, lime segment"}}
-        });
-        cocktails.Add(new Drink
-        {
-            Id = 2,
-            Name = "Mai Tai",
-            Ingredients = new List<Ingredient>
-        { new Ingredient { Id = 1, Name = "Dark Rum", Amount = 50.0 },
-          new Ingredient { Id = 2, Name = "Orange Curacao", Amount = 15.0 },
-          new Ingredient { Id = 3, Name = "Lime Juice", Amount = 10.0 },
-          new Ingredient { Id = 4, Name = "Lime Section, Maraschino Cherry, Lime segment"}}
-        });
-        cocktails.Add(new Drink
-        {
-            Id = 3,
-            Name = "White Russian",
-            Ingredients = new List<Ingredient>
-        { new Ingredient { Id = 1, Name = "Fresh Cream", Amount = 30.0 },
-          new Ingredient { Id = 2, Name = "Kahlua", Amount = 30.0 },
-          new Ingredient { Id = 3, Name = "Vodka", Amount = 90.0 }}
-        });
-        return cocktails;
     }
 }
